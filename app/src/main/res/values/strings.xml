@@ -27,6 +27,9 @@
     <!-- Key name for storing location in SharedPreferences [CHAR LIMIT=NONE] -->
     <string name="pref_location_key" translatable="false">location</string>
 
+    <!-- Key name for storing location status in Shared Preferences-->
+    <string name="pref_location_status_key" translatable="false">location_status</string>
+
     <!-- Default postal code for location preference [CHAR LIMIT=NONE] -->
     <string name="pref_location_default" translatable="false">94043</string>
 
@@ -95,5 +98,7 @@
     <string name="pref_last_notification">last_notification</string>
     <string name="weather_data_missing">No weather Data available. </string>
     <string name="internet_connection_not_available">No Internet Connection Available.</string>
+
+
 
 </resources>
