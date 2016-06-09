@@ -100,6 +100,7 @@
     <string name="internet_connection_not_available">No Internet Connection Available.</string>
     <string name="server_down">The server is not returning data.</string>
     <string name="server_invalid">The server is not returning valid data. Please check for an updated version of Sunshine.</string>
+    <string name="status_invalid">Location Status invalid</string>
 
 
 </resources>

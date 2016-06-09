@@ -274,4 +274,12 @@ public class Utility {
         return sharedPreferences.getInt(context.getString(R.string.pref_location_status_key), SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN);
     }
 
+    /**
+     * @param context
+     * @param locationStatus
+     */
+    public static void setLocationStatus(Context context, @SunshineSyncAdapter.LocationStatus int locationStatus){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences.edit().putInt(context.getString(R.string.pref_location_status_key), locationStatus).apply();
+    }
 }
