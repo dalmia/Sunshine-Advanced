@@ -16,9 +16,11 @@
 package com.example.android.sunshine.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -40,7 +42,7 @@ import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
 /**
  * Encapsulates fetching the forecast and displaying it as a {@link ListView} layout.
  */
-public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String LOG_TAG = ForecastFragment.class.getSimpleName();
     private ForecastAdapter mForecastAdapter;
 
@@ -83,6 +85,12 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     static final int COL_WEATHER_CONDITION_ID = 6;
     static final int COL_COORD_LAT = 7;
     static final int COL_COORD_LONG = 8;
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key == getString(R.string.pref_location_status_key))
+            updateEmptyView();
+    }
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -185,6 +193,20 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         super.onActivityCreated(savedInstanceState);
     }
 
+    @Override
+    public void onResume() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
+    }
+
     // since we read the location when we create the loader, all we need to do is restart things
     void onLocationChanged() {
         updateWeather();
@@ -256,16 +278,14 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (data.getCount() == 0) {
-            //Displays the correct information if no internet connection detected
-            if (!Utility.isNetworkAvailable(getActivity()))
-                emptyText.append(getString(R.string.internet_connection_not_available));
-        }
         mForecastAdapter.swapCursor(data);
         if (mPosition != ListView.INVALID_POSITION) {
             // If we don't need to restart the loader, and there's a desired position to restore
             // to, do so now.
             mListView.smoothScrollToPosition(mPosition);
+        }
+        if(data.getCount() == 0){
+            updateEmptyView();
         }
     }
 
@@ -279,5 +299,29 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         if (mForecastAdapter != null) {
             mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
         }
+    }
+
+
+    /**
+     * Sets the empty view according to the value of the location
+     * status stored in the SharedPreference.
+     */
+    public void updateEmptyView() {
+
+        @SunshineSyncAdapter.LocationStatus int locationStatus = Utility.getLocationStatus(getActivity());
+        switch (locationStatus) {
+            case SunshineSyncAdapter.LOCATION_STATUS_SERVER_DOWN:
+                emptyText.append(getString(R.string.server_down));
+                break;
+
+            case SunshineSyncAdapter.LOCATION_STATUS_SERVER_INVALID:
+                emptyText.append(getString(R.string.server_invalid));
+                break;
+            default:
+                if (!Utility.isNetworkAvailable(getActivity()))
+                    emptyText.append(getString(R.string.internet_connection_not_available));
+        }
+
+
     }
 }
