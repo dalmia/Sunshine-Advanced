@@ -27,6 +27,7 @@ import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Utility {
     public static String getPreferredLocation(Context context) {
@@ -67,7 +68,7 @@ public class Utility {
      * Helper method to convert the database representation of the date into something to display
      * to users.  As classy and polished a user experience as "20140102" is, we can do better.
      *
-     * @param context Context to use for resource localization
+     * @param context      Context to use for resource localization
      * @param dateInMillis The date in milliseconds
      * @return a user-friendly representation of the date.
      */
@@ -93,7 +94,7 @@ public class Utility {
                     formatId,
                     today,
                     getFormattedMonthDay(context, dateInMillis)));
-        } else if ( julianDay < currentJulianDay + 7 ) {
+        } else if (julianDay < currentJulianDay + 7) {
             // If the input date is less than a week in the future, just return the day name.
             return getDayName(context, dateInMillis);
         } else {
@@ -107,7 +108,7 @@ public class Utility {
      * Given a day, returns just the name to use for that day.
      * E.g "today", "tomorrow", "wednesday".
      *
-     * @param context Context to use for resource localization
+     * @param context      Context to use for resource localization
      * @param dateInMillis The date in milliseconds
      * @return
      */
@@ -121,7 +122,7 @@ public class Utility {
         int currentJulianDay = Time.getJulianDay(System.currentTimeMillis(), t.gmtoff);
         if (julianDay == currentJulianDay) {
             return context.getString(R.string.today);
-        } else if ( julianDay == currentJulianDay +1 ) {
+        } else if (julianDay == currentJulianDay + 1) {
             return context.getString(R.string.tomorrow);
         } else {
             Time time = new Time();
@@ -134,12 +135,13 @@ public class Utility {
 
     /**
      * Converts db date format to the format "Month day", e.g "June 24".
-     * @param context Context to use for resource localization
+     *
+     * @param context      Context to use for resource localization
      * @param dateInMillis The db formatted date string, expected to be of the form specified
-     *                in Utility.DATE_FORMAT
+     *                     in Utility.DATE_FORMAT
      * @return The day in the form of a string formatted "December 6"
      */
-    public static String getFormattedMonthDay(Context context, long dateInMillis ) {
+    public static String getFormattedMonthDay(Context context, long dateInMillis) {
         Time time = new Time();
         time.setToNow();
         SimpleDateFormat dbDateFormat = new SimpleDateFormat(Utility.DATE_FORMAT);
@@ -184,6 +186,7 @@ public class Utility {
     /**
      * Helper method to provide the icon resource id according to the weather condition id returned
      * by the OpenWeatherMap call.
+     *
      * @param weatherId from OpenWeatherMap API response
      * @return resource id for the corresponding icon. -1 if no relation is found.
      */
@@ -219,6 +222,7 @@ public class Utility {
     /**
      * Helper method to provide the art resource id according to the weather condition id returned
      * by the OpenWeatherMap call.
+     *
      * @param weatherId from OpenWeatherMap API response
      * @return resource id for the corresponding icon. -1 if no relation is found.
      */
@@ -251,35 +255,39 @@ public class Utility {
         return -1;
     }
 
-    /** Helper function to check whether internet connection is available
+    /**
+     * Helper function to check whether internet connection is available
      * * @param context
+     *
      * @return whether the network is available or not boolean
      */
-    public static boolean isNetworkAvailable(Context context){
+    public static boolean isNetworkAvailable(Context context) {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-        return activeNetwork!=null&&activeNetwork.isConnectedOrConnecting();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
     }
 
     /**
-     *
      * @param context Android Context
      * @return the location status integer type
      */
     @SuppressWarnings("ResourceType")
-    public static @SunshineSyncAdapter.LocationStatus int getLocationStatus(Context context){
+    public static
+    @SunshineSyncAdapter.LocationStatus
+    int getLocationStatus(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getInt(context.getString(R.string.pref_location_status_key), SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN);
     }
 
     /**
      * Helper function to set the location status after a network call
-     * @param context Android Context
+     *
+     * @param context        Android Context
      * @param locationStatus location status on querying the server
      */
-    public static void setLocationStatus(Context context, @SunshineSyncAdapter.LocationStatus int locationStatus){
+    public static void setLocationStatus(Context context, @SunshineSyncAdapter.LocationStatus int locationStatus) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPreferences.edit().putInt(context.getString(R.string.pref_location_status_key), locationStatus).apply();
     }
@@ -287,9 +295,10 @@ public class Utility {
     /**
      * Sets the location status to LOCATION_STATUS_UNKNOWN when the
      * location preference is changed in the SettingsActivity
+     *
      * @param context Android Context
      */
-    public static void resetLocationStatus(Context context){
+    public static void resetLocationStatus(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPreferences.edit().putInt(context.getString(R.string.pref_location_status_key), SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN).apply();
     }
@@ -297,7 +306,8 @@ public class Utility {
     /**
      * Helper method to provide the string according to the weather
      * condition id returned by the OpenWeatherMap call.
-     * @param context Android context
+     *
+     * @param context   Android context
      * @param weatherId from OpenWeatherMap API response
      * @return string for the weather condition. null if no relation is found.
      */
@@ -309,7 +319,7 @@ public class Utility {
             stringId = R.string.condition_2xx;
         } else if (weatherId >= 300 && weatherId <= 321) {
             stringId = R.string.condition_3xx;
-        } else switch(weatherId) {
+        } else switch (weatherId) {
             case 500:
                 stringId = R.string.condition_500;
                 break;
@@ -476,35 +486,39 @@ public class Utility {
      * Helper method to provide the art urls according to the weather condition id returned
      * by the OpenWeatherMap call.
      *
-     * @param context Context to use for retrieving the URL format
+     * @param context   Context to use for retrieving the URL format
      * @param weatherId from OpenWeatherMap API response
      * @return url for the corresponding weather artwork. null if no relation is found.
      */
     public static String getArtUrlForWeatherCondition(Context context, int weatherId) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String formatArtUrl = prefs.getString(context.getString(R.string.pref_art_pack_key),
+                context.getString(R.string.pref_art_pack_sunshine));
         // Based on weather code data found at:
         // http://bugs.openweathermap.org/projects/api/wiki/Weather_Condition_Codes
         if (weatherId >= 200 && weatherId <= 232) {
-            return context.getString(R.string.format_art_url, "storm");
+            return String.format(Locale.US, formatArtUrl, "storm");
         } else if (weatherId >= 300 && weatherId <= 321) {
-            return context.getString(R.string.format_art_url, "light_rain");
+            return String.format(Locale.US, formatArtUrl, "light_rain");
         } else if (weatherId >= 500 && weatherId <= 504) {
-            return context.getString(R.string.format_art_url, "rain");
+            return String.format(Locale.US, formatArtUrl, "rain");
         } else if (weatherId == 511) {
-            return context.getString(R.string.format_art_url, "snow");
+            return String.format(Locale.US, formatArtUrl, "snow");
         } else if (weatherId >= 520 && weatherId <= 531) {
-            return context.getString(R.string.format_art_url, "rain");
+            return String.format(Locale.US, formatArtUrl, "rain");
         } else if (weatherId >= 600 && weatherId <= 622) {
-            return context.getString(R.string.format_art_url, "snow");
+            return String.format(Locale.US, formatArtUrl, "snow");
         } else if (weatherId >= 701 && weatherId <= 761) {
-            return context.getString(R.string.format_art_url, "fog");
+            return String.format(Locale.US, formatArtUrl, "fog");
         } else if (weatherId == 761 || weatherId == 781) {
-            return context.getString(R.string.format_art_url, "storm");
+            return String.format(Locale.US, formatArtUrl, "storm");
         } else if (weatherId == 800) {
-            return context.getString(R.string.format_art_url, "clear");
+            return String.format(Locale.US, formatArtUrl, "clear");
         } else if (weatherId == 801) {
-            return context.getString(R.string.format_art_url, "light_clouds");
+            return String.format(Locale.US, formatArtUrl, "light_clouds");
         } else if (weatherId >= 802 && weatherId <= 804) {
-            return context.getString(R.string.format_art_url, "clouds");
+            return String.format(Locale.US, formatArtUrl, "clouds");
         }
         return null;
-    } }
+    }
+}
