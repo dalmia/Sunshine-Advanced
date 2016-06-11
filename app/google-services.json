@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "35786547210",
+    "project_id": "auspicious-lead-133906"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35786547210:android:83b792e26f07bf18",
+        "android_client_info": {
+          "package_name": "com.example.android.sunshine.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjmCWxYXmPYSkPBN-k3c5e63jIyChj_Do"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

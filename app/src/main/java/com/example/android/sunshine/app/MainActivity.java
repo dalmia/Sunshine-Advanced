@@ -21,14 +21,17 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 public class MainActivity extends ActionBarActivity implements ForecastFragment.Callback {
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
-
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private boolean mTwoPane;
     private String mLocation;
 
@@ -61,6 +64,11 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         forecastFragment.setUseTodayLayout(!mTwoPane);
 
         SunshineSyncAdapter.initializeSyncAdapter(this);
+        //If playServices not found, prompt the user to install
+        if(!checkPlayServices()){
+            Toast.makeText(MainActivity.this, R.string.google_play_services_missing,
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -125,4 +133,25 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
             startActivity(intent);
         }
     }
+
+    /**
+     * @return whether the device has play services set up or not
+     */
+    public boolean checkPlayServices(){
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(this);
+        if(!(resultCode == ConnectionResult.SUCCESS)){
+            if(googleApiAvailability.isUserResolvableError(resultCode)){
+                googleApiAvailability.getErrorDialog(this,
+                        resultCode, PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            }else{
+                Toast.makeText(MainActivity.this, R.string.device_not_supported, Toast.LENGTH_SHORT).show();
+                finish();
+            }
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
+

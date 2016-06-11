@@ -191,5 +191,7 @@
 
     <!-- Format for retrieving art from an external source [CHAR LIMIT=NONE] -->
     <string name="format_art_url" translatable="false">https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-xxhdpi/art_<xliff:g id="description">%s</xliff:g>.png</string>
+    <string name="google_play_services_missing">Some features won\'t be available. Please install the latest version of Google Play Services.</string>
+    <string name="device_not_supported">Device not supported</string>
 
 </resources>
