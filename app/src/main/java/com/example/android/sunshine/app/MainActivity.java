@@ -16,13 +16,16 @@
 package com.example.android.sunshine.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.android.sunshine.app.gcm.RegistrationIntentService;
 import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -30,8 +33,9 @@ import com.google.android.gms.common.GoogleApiAvailability;
 public class MainActivity extends ActionBarActivity implements ForecastFragment.Callback {
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
-    private static final String DETAILFRAGMENT_TAG = "DFTAG";
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    static public final String SENT_TOKEN_TO_SERVER = "tokenSent";
+    private final String DETAILFRAGMENT_TAG = "DFTAG";
+    private final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private boolean mTwoPane;
     private String mLocation;
 
@@ -64,10 +68,13 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         forecastFragment.setUseTodayLayout(!mTwoPane);
 
         SunshineSyncAdapter.initializeSyncAdapter(this);
-        //If playServices not found, prompt the user to install
-        if(!checkPlayServices()){
-            Toast.makeText(MainActivity.this, R.string.google_play_services_missing,
-                    Toast.LENGTH_SHORT).show();
+        if(checkPlayServices()){
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            boolean sentToken = sharedPreferences.getBoolean(SENT_TOKEN_TO_SERVER, false);
+            if(!sentToken){
+                Intent intent = new Intent(this, RegistrationIntentService.class);
+                startService(intent);
+            }
         }
     }
 
