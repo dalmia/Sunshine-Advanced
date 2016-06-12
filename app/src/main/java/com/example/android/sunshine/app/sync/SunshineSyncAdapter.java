@@ -409,7 +409,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                     String contentText = String.format(context.getString(R.string.format_notification),
                             desc,
                             Utility.formatTemperature(context, high),
-                            Utility.formatTNemperature(context, low));
+                            Utility.formatTemperature(context, low));
 
                     // NotificationCompatBuilder is a very convenient way to build backward-compatible
                     // notifications.  Just throw in some data.
