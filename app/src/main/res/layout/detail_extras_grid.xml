@@ -60,4 +60,12 @@
         android:textSize="20sp"
         app:layout_gravity="fill"
         app:layout_rowWeight="1" />
+
+    <TextView
+        android:id="@+id/detail_wind_textview"
+        android:gravity="center_vertical"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textColor="@android:color/white"
+        app:layout_gravity="fill"
+        tools:text="4km/h NW" />
 </android.support.v7.widget.GridLayout>
