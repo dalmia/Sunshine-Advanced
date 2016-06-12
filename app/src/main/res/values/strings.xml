@@ -207,4 +207,5 @@
 
     <!-- Attribution Test for using Place Picker -->
     <string name="attribution_text">Powered by Google</string>
+    <string name="no_network">No network Available</string>
 </resources>
