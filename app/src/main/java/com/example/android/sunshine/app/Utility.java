@@ -30,6 +30,9 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Utility {
+    //Default value of the LatLng object received from the PlacePicker
+    public static float DEFAULT_LATLONG = 0F;
+
     public static String getPreferredLocation(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(context.getString(R.string.pref_location_key),
@@ -551,6 +554,43 @@ public class Utility {
         String sunshineArtPack = context.getString(R.string.pref_art_pack_sunshine);
         return prefs.getString(context.getString(R.string.pref_art_pack_key),
                 sunshineArtPack).equals(sunshineArtPack);
+    }
+
+
+    /**
+     * Helper function to check whether the location in the location preference is set
+     * by the user manually or comes from a place picker.
+     *
+     * @param context Context of the activity making the call
+     * @return boolean indicating whether the location's latitude and longitude is set
+     */
+    public static boolean isLocationLatLonAvailable(Context context) {
+        SharedPreferences prefs
+                = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.contains(context.getString(R.string.pref_location_latitude))
+                && prefs.contains(context.getString(R.string.pref_location_longitude));
+    }
+
+    /**
+     * @param context - Calling Activity's context
+     * @return the current location's latitude float value
+     */
+    public static float getLocationLatitude(Context context) {
+        SharedPreferences prefs
+                = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getFloat(context.getString(R.string.pref_location_latitude),
+                DEFAULT_LATLONG);
+    }
+
+    /**
+     * @param context - Calling Activity's Context
+     * @return current location's longitude float value
+     */
+    public static float getLocationLongitude(Context context) {
+        SharedPreferences prefs
+                = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getFloat(context.getString(R.string.pref_location_longitude),
+                DEFAULT_LATLONG);
     }
 
 
