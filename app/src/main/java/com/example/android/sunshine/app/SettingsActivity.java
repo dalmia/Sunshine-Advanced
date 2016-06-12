@@ -27,6 +27,8 @@ import android.preference.PreferenceManager;
 
 import com.example.android.sunshine.app.data.WeatherContract;
 import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings.
@@ -38,6 +40,8 @@ import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
  */
 public class SettingsActivity extends PreferenceActivity
         implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
+
+    static public final int PLACE_PICKER_REQUEST = 9090;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -142,6 +146,24 @@ public class SettingsActivity extends PreferenceActivity
         }else if (key.equals(getString(R.string.pref_art_pack_key))) {
             // art pack changed. update lists of weather entries accordingly
             getContentResolver().notifyChange(WeatherContract.WeatherEntry.CONTENT_URI, null);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(requestCode == PLACE_PICKER_REQUEST){
+            if(resultCode == RESULT_OK){
+                Place place= PlacePicker.getPlace(data, this);
+                String address = place.getAddress().toString();
+                SharedPreferences sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(this);
+                sharedPreferences.edit().
+                        putString(getString(R.string.pref_location_key), address).apply();
+
+            }
+        }else{
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 }
