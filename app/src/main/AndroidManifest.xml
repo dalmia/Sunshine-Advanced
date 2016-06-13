@@ -124,6 +124,14 @@
             android:name=".gcm.RegistrationIntentService"
             android:exported="false">
         </service>
+        <receiver android:name=".widget.TodayWidgetProvider"
+            android:title="@string/title_widget_today">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.action"
+                android:resource="@xml/widget_info_today"/>
+        </receiver>
     </application>
 
 </manifest>
