@@ -180,6 +180,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 });
             }
         }
+
         if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
             // The RecyclerView probably hasn't even been populated yet.  Actually perform the
             // swapout in onLoadFinished.

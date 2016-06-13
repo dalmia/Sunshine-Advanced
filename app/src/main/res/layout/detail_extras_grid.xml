@@ -32,7 +32,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textColor="@android:color/white"
         app:layout_gravity="fill"
-        tools:text="38%" />
+        android:text="38%" />
     <TextView
         android:id="@+id/detail_pressure_label_textview"
         android:fontFamily="sans-serif"
