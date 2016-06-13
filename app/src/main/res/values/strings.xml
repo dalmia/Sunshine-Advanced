@@ -208,4 +208,7 @@
     <!-- Attribution Test for using Place Picker -->
     <string name="attribution_text">Powered by Google</string>
     <string name="no_network">No network Available</string>
+
+    <!-- For Shared Element Transitions -->
+    <string name="detail_icon_transition_name" translatable="false">TN_DetailIcon</string>
 </resources>

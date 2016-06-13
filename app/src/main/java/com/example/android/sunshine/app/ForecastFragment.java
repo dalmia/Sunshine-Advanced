@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -78,7 +79,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         /**
          * DetailFragmentCallback for when an item has been selected.
          */
-        public void onItemSelected(Uri dateUri);
+        public void onItemSelected(Uri dateUri, ForecastAdapter.ForecastViewHolder vh);
     }
 
     public ForecastFragment() {
@@ -132,7 +133,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         // Get a reference to the RecyclerView, and attach this adapter to it.
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_forecast);
@@ -146,6 +147,25 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
+        final AppBarLayout appBarLayout = (AppBarLayout) rootView.findViewById(R.id.appbar);
+        if(appBarLayout != null){
+            if(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP){
+                appBarLayout.setElevation(0);
+                mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if(mRecyclerView.computeVerticalScrollOffset() == 0){
+                            appBarLayout.setElevation(0);
+                        }else{
+                            appBarLayout.setElevation(appBarLayout.getTargetElevation());
+                        }
+                    }
+                });
+            }
+        }
+
         // The ForecastAdapter will take data from a source and
         // use it to populate the RecyclerView it's attached to.
         mForecastAdapter = new ForecastAdapter(getActivity(), new ForecastAdapter.ForecastAdapterOnClickHandler() {
@@ -154,8 +174,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 String locationSetting = Utility.getPreferredLocation(getActivity());
                 ((Callback) getActivity())
                         .onItemSelected(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
-                                locationSetting, date)
-                        );
+                                locationSetting, date), vh);
                 mPosition = vh.getAdapterPosition();
             }
         }, emptyView);

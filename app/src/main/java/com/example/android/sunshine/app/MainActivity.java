@@ -20,6 +20,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -129,7 +131,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
     }
 
     @Override
-    public void onItemSelected(Uri contentUri) {
+    public void onItemSelected(Uri contentUri, ForecastAdapter.ForecastViewHolder vh) {
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
@@ -146,7 +148,9 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         } else {
             Intent intent = new Intent(this, DetailActivity.class)
                     .setData(contentUri);
-            startActivity(intent);
+            ActivityOptionsCompat activityOptions =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(this);
+            ActivityCompat.startActivity(this, intent, activityOptions.toBundle());
         }
     }
 
