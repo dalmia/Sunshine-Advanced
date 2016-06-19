@@ -1,28 +1,72 @@
-Sunshine
-========
+# Popular Movies
 
-Sunshine is the companion Android app for the Udacity course [Developing Android Apps: Android Fundamentals](https://www.udacity.com/course/ud853).
+This a project developed as a part of Udacity's Android Developer Nanodegree program, owing to the Tata Trusts and Google India Scholarship Program. It fetches a list of movies sorted according to the user's preference. The app stores data locally on the device using a Content Provider and displays the same to the user using a Cursor Loader.
 
-Take the course to find out how to build this app a step at a time, and eventually create your own Android App!
+## Available on Google Play
 
-This is the second version of the Sunshine code. The repository has been updated on:
+<a href="https://play.google.com/store/apps/details?id=com.passenger.android.sunshine.app">
+<img alt="Get it on Google Play" src="http://steverichey.github.io/google-play-badge-svg/img/en_get.svg" />
+</a>
 
-* **October 18th, 2015** - Updated to support use of the openweathermap.org API key.
-* **February 13th, 2015** - Major update
-* February 25, 2015 - Minor bug fixes
-* March 4th, 2015 - Minor bug fixes
+## Features
 
-### Open Weather Map API Key is required.
+* View the list of the 'Most Popular' movies or the 'Highest Rated' ones, alongwith revelant details of each film.
+* Mark movies as favorite to be stored locally to enable viewing even when the user is offline
+* Watch trailers and Read reviews 
 
-In order for the Sunshine app to function properly as of October 18th, 2015 an API key for openweathermap.org must be included with the build.
+## Getting Started
 
-We recommend that each student obtain a key via the following [instructions](http://openweathermap.org/appid#use), and include the unique key for the build by adding the following line to [USER_HOME]/.gradle/gradle.properties
+The app fetches weather data using [Open Weather Map](http://openweathermap.org/) API. You need to have your own API Key for running the app. When you get it, replace MyOpenWeatherAPIKey with the key you received in the following file:
+    ```
+    app/build.gradle
+    ```
 
-`MyOpenWeatherMapApiKey="<UNIQUE_API_KEY">`
+## Screenshots
 
-For help migrating an existing repo (fork or clone prior to 10/18/15), please check out this [guide.](https://docs.google.com/document/d/1e8LXahedBlCW1_dp_FyvQ3ugUAwUBJDuJCoKf3tgNVs/pub?embedded=true) 
+![screen](../master/screens/Phone/1.png)
 
-========
-For the original version, please go [here](https://github.com/udacity/Sunshine).
+![screen](../master/screens/Phone/2.png)
 
-A changelog for the course can be found [here](https://docs.google.com/a/knowlabs.com/document/d/193xJb_OpcNCqgquMhxPrMh05IEYFXQqt0S6-6YK8gBw/pub).
+![screen](../master/screens/Phone/3.png)
+
+![screen](../master/screens/Phone/4.png)
+
+![screen](../master/screens/Phone/5.png)
+
+![screen](../master/screens/Phone/3.png)
+
+![screen](../master/screens/Tablets/1.png)
+
+![screen](../master/screens/Tablets/1.png)
+
+
+## Libraries
+
+* [ButterKnife](https://github.com/JakeWharton/butterknife)
+* [Picasso](http://square.github.io/picasso/)
+* [Android Volley](https://github.com/mcxiaoke/android-volley)
+* [Android Support Library](https://developer.android.com/topic/libraries/support-library/index.html)
+* [Android Design Library](http://android-developers.blogspot.in/2015/05/android-design-support-library.html)
+* [Recycler View](https://developer.android.com/reference/android/support/v7/widget/RecyclerView.html) & [Card View](https://developer.android.com/reference/android/support/v7/widget/CardView.html)
+
+## Android Developer Nanodegree
+[![udacity][1]][2]
+
+[1]: ../master/screens/nanodegree.png
+[2]: https://www.udacity.com/course/android-developer-nanodegree--nd801
+
+## License
+
+    Copyright 2016 Aman Dalmia
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
