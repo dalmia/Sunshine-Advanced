@@ -38,6 +38,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.passenger.android.sunshine.app.ads.SunshineAdListener;
 import com.passenger.android.sunshine.app.data.WeatherContract;
 import com.passenger.android.sunshine.app.data.WeatherContract.WeatherEntry;
 
@@ -50,7 +53,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     static final String DETAIL_URI = "URI";
 
     private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
-
+    private AdView adView;
     private ShareActionProvider mShareActionProvider;
     private String mForecast;
     private Uri mUri;
@@ -109,6 +112,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         }
 
         View rootView = inflater.inflate(R.layout.fragment_detail_start, container, false);
+        adView = (AdView) rootView.findViewById(R.id.adView);
+        adView.setAdListener(new SunshineAdListener(getActivity()));
+        AdRequest request = new AdRequest.Builder().build();
+        adView.loadAd(request);
         mIconView = (ImageView) rootView.findViewById(R.id.detail_icon);
         mDateView = (TextView) rootView.findViewById(R.id.detail_date_textview);
         mDescriptionView = (TextView) rootView.findViewById(R.id.detail_forecast_textview);

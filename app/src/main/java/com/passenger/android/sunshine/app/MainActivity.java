@@ -16,10 +16,8 @@
 package com.passenger.android.sunshine.app;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.ActionBarActivity;
@@ -28,11 +26,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.passenger.android.sunshine.app.data.WeatherContract;
-import com.passenger.android.sunshine.app.gcm.RegistrationIntentService;
-import com.passenger.android.sunshine.app.sync.SunshineSyncAdapter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.passenger.android.sunshine.app.ads.SunshineAdListener;
+import com.passenger.android.sunshine.app.data.WeatherContract;
+import com.passenger.android.sunshine.app.sync.SunshineSyncAdapter;
 
 public class MainActivity extends ActionBarActivity implements ForecastFragment.Callback {
 
@@ -42,6 +42,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
     private final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private boolean mTwoPane;
     private String mLocation;
+    private InterstitialAd mInterstitial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,12 +84,12 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         }
         SunshineSyncAdapter.initializeSyncAdapter(this);
         if (checkPlayServices()) {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            /*SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             boolean sentToken = sharedPreferences.getBoolean(SENT_TOKEN_TO_SERVER, false);
             if (!sentToken) {
                 Intent intent = new Intent(this, RegistrationIntentService.class);
                 startService(intent);
-            }
+            }*/
         }
     }
 
@@ -156,11 +157,28 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
                     .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
                     .commit();
         } else {
+            mInterstitial = new InterstitialAd(this);
+            mInterstitial.setAdUnitId(getResources().getString(R.string.interstitial_ad_unit_id));
+            mInterstitial.setAdListener(new SunshineAdListener(this){
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    mInterstitial.show();
+                }
+
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    super.onAdFailedToLoad(errorCode);
+                }
+            });
+            AdRequest request = new AdRequest.Builder().build();
+            mInterstitial.loadAd(request);
             Intent intent = new Intent(this, DetailActivity.class)
                     .setData(contentUri);
             ActivityOptionsCompat activityOptions =
                     ActivityOptionsCompat.makeSceneTransitionAnimation(this);
             ActivityCompat.startActivity(this, intent, activityOptions.toBundle());
+
         }
     }
 

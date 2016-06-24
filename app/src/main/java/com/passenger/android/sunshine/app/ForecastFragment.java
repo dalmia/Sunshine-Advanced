@@ -24,6 +24,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.passenger.android.sunshine.app.ads.SunshineAdListener;
 import com.passenger.android.sunshine.app.data.WeatherContract;
 import com.passenger.android.sunshine.app.sync.SunshineSyncAdapter;
 
@@ -34,8 +37,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     private RecyclerView mRecyclerView;
     private boolean mUseTodayLayout;
     private long mInitialSelectedDate = -1;
-
-
+    private AdView adView;
     private static final String SELECTED_KEY = "selected_position";
 
     private static final int FORECAST_LOADER = 0;
@@ -135,7 +137,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                              Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
+        adView = (AdView) rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.setAdListener(new SunshineAdListener(getActivity()));
+        adView.loadAd(adRequest);
         // Get a reference to the RecyclerView, and attach this adapter to it.
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_forecast);
 

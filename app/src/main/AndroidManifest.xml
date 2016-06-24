@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.android.sunshine.app" >
+    package="com.passenger.android.sunshine.app" >
 
     <!-- This permission is necessary in order for Sunshine to perform network access. -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -24,7 +24,7 @@
         android:name="com.google.android.c2dm.permission.RECEIVE"/>
 
     <permission
-        android:name="com.example.android.sunshine.app.permission.C2D_MESSAGE"
+        android:name="com.passenger.android.sunshine.app.permission.C2D_MESSAGE"
         android:protectionLevel="signature"/>
     
     <uses-permission android:name="com.example.android.sunshine.app.permission.C2D_MESSAGE"/>
@@ -41,7 +41,7 @@
             android:value="AIzaSyC1rb4KiJZRazWm8WVhnPAzmmDMdUMgi_g"/>
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.passenger.android.sunshine.app.MainActivity"
             android:theme="@style/AppTheme.Details"
             android:label="@string/app_name" >
             <intent-filter>
@@ -51,30 +51,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailActivity"
+            android:name="com.passenger.android.sunshine.app.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="com.passenger.android.sunshine.app.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.sunshine.app.MainActivity" />
+                android:value="com.passenger.android.sunshine.app.MainActivity" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.passenger.android.sunshine.app.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.passenger.android.sunshine.app.MainActivity"
             android:theme="@style/SettingsTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.sunshine.app.MainActivity" />
+                android:value="com.passenger.android.sunshine.app.MainActivity" />
         </activity>
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.Translucent" />
         <provider
             android:authorities="@string/content_authority"
-            android:name=".data.WeatherProvider"
+            android:name="com.passenger.android.sunshine.app.data.WeatherProvider"
             android:exported="false"
             android:syncable="true" />
 
         <!-- SyncAdapter's dummy authentication service -->
-        <service android:name=".sync.SunshineAuthenticatorService">
+        <service android:name="com.passenger.android.sunshine.app.sync.SunshineAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -85,7 +89,7 @@
 
         <!-- The SyncAdapter service -->
         <service
-            android:name=".sync.SunshineSyncService"
+            android:name="com.passenger.android.sunshine.app.sync.SunshineSyncService"
             android:exported="true"
             >
             <intent-filter>
@@ -106,7 +110,7 @@
                 <category android:name="com.example.android.sunshine.app"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".widget.TodayWidgetProvider"
+        <receiver android:name="com.passenger.android.sunshine.app.widget.TodayWidgetProvider"
             android:title="@string/title_widget_today">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -115,7 +119,7 @@
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info_today"/>
         </receiver>
-        <receiver android:name=".widget.DetailWidgetProvider"
+        <receiver android:name="com.passenger.android.sunshine.app.widget.DetailWidgetProvider"
             android:title="@string/title_widget_detail">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -125,7 +129,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info_detail"/>
         </receiver>
-        <service android:name=".muzei.WeatherMuzeiSource"
+        <service android:name="com.passenger.android.sunshine.app.muzei.WeatherMuzeiSource"
             android:icon="@drawable/ic_muzei"
             android:label="@string/app_name"
             android:description="@string/muzei_description">
@@ -134,28 +138,28 @@
             </intent-filter>
             <meta-data android:name="color" android:value="@color/primary"/>
         </service>
-        <service android:name=".widget.DetailWidgetRemoteViewsService"
+        <service android:name="com.passenger.android.sunshine.app.widget.DetailWidgetRemoteViewsService"
             android:enabled="@bool/widget_detail_enabled"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS">
         </service>
-        <service android:name=".widget.TodayWidgetIntentService"/>
+        <service android:name="com.passenger.android.sunshine.app.widget.TodayWidgetIntentService"/>
         <service
-            android:name=".gcm.MyGcmListenerService"
+            android:name="com.passenger.android.sunshine.app.gcm.MyGcmListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
             </intent-filter>
         </service>
         <service
-            android:name=".gcm.MyInstanceIDListenerService"
+            android:name="com.passenger.android.sunshine.app.gcm.MyInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID"/>
             </intent-filter>
         </service>
         <service
-            android:name=".gcm.RegistrationIntentService"
+            android:name="com.passenger.android.sunshine.app.gcm.RegistrationIntentService"
             android:exported="false">
         </service>
 
